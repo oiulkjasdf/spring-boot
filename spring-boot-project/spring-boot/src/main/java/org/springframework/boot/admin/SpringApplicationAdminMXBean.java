@@ -25,10 +25,18 @@ package org.springframework.boot.admin;
  */
 public interface SpringApplicationAdminMXBean {
 
-	/**
+	/**  
 	 * Specify if the application has fully started and is now ready.
 	 * @return {@code true} if the application is ready
 	 * @see org.springframework.boot.context.event.ApplicationReadyEvent
+	 */
+	
+	/*
+	 * @Description 准备好了
+	 * @author suxxin
+	 * @date 2019/6/12
+	 * @param []
+	 * @return boolean
 	 */
 	boolean isReady();
 
@@ -39,6 +47,14 @@ public interface SpringApplicationAdminMXBean {
 	 * @return {@code true} if the application runs in an embedded web container
 	 * @see #isReady()
 	 */
+	
+	/*
+	 * @Description 是web嵌入的app
+	 * @author suxxin
+	 * @date 2019/6/12
+	 * @param []
+	 * @return boolean
+	 */
 	boolean isEmbeddedWebApplication();
 
 	/**
@@ -47,11 +63,26 @@ public interface SpringApplicationAdminMXBean {
 	 * @param key the property key
 	 * @return the property value or {@code null} if it does not exist
 	 */
+	/*
+	 * @Description 获取配置参数
+	 * @author suxxin
+	 * @date 2019/6/12
+	 * @param [key]
+	 * @return String
+	 */
 	String getProperty(String key);
 
 	/**
 	 * Shutdown the application.
 	 * @see org.springframework.context.ConfigurableApplicationContext#close()
+	 */
+
+	/*
+	 * @Description 杀进程
+	 * @author suxxin
+	 * @date 2019/6/12
+	 * @param []
+	 * @return void
 	 */
 	void shutdown();
 
