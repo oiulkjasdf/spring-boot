@@ -23,6 +23,7 @@ package org.springframework.boot.ansi;
  * @author Geoffrey Chandler
  * @since 1.3.0
  */
+/*什么玩意儿颜色 */
 public enum AnsiColor implements AnsiElement {
 
 	DEFAULT("39"),

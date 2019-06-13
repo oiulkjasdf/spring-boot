@@ -23,6 +23,7 @@ package org.springframework.boot.ansi;
  * @author Geoffrey Chandler
  * @since 1.3.0
  */
+/*字符编码背景颜色   实现接口  我已经会这种写法  get*/
 public enum AnsiBackground implements AnsiElement {
 
 	DEFAULT("49"),

@@ -26,20 +26,22 @@ import org.springframework.util.Assert;
  *
  * @author Phillip Webb
  */
+/*字符编码输出 */
 public abstract class AnsiOutput {
-
+	/*编码*/
 	private static final String ENCODE_JOIN = ";";
 
+	/*枚举*/
 	private static Enabled enabled = Enabled.DETECT;
-
+	/*允许控制台*/
 	private static Boolean consoleAvailable;
-
+	/*可编译的*/
 	private static Boolean ansiCapable;
-
+	/*凑  国际化？ */
 	private static final String OPERATING_SYSTEM_NAME = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
-
+	/*编码起始*/
 	private static final String ENCODE_START = "\033[";
-
+	/*编码结束 m*/
 	private static final String ENCODE_END = "m";
 
 	private static final String RESET = "0;" + AnsiColor.DEFAULT;
@@ -58,6 +60,7 @@ public abstract class AnsiOutput {
 	 * @param consoleAvailable if the console is known to be available or {@code null} to
 	 * use standard detection logic.
 	 */
+	/*开放 扩展  禁止 修改   开闭原则*/
 	public static void setConsoleAvailable(Boolean consoleAvailable) {
 		AnsiOutput.consoleAvailable = consoleAvailable;
 	}
@@ -71,6 +74,7 @@ public abstract class AnsiOutput {
 	 * @param element the element to encode
 	 * @return the encoded element or an empty string
 	 */
+	/*元素*/
 	public static String encode(AnsiElement element) {
 		if (isEnabled()) {
 			return ENCODE_START + element + ENCODE_END;
@@ -95,6 +99,7 @@ public abstract class AnsiOutput {
 		return sb.toString();
 	}
 
+	/*给元素按照一定的逻辑 来 sb append*/
 	private static void buildEnabled(StringBuilder sb, Object[] elements) {
 		boolean writingAnsi = false;
 		boolean containsEncoding = false;
@@ -124,6 +129,7 @@ public abstract class AnsiOutput {
 		}
 	}
 
+	/*不可构建*/
 	private static void buildDisabled(StringBuilder sb, Object[] elements) {
 		for (Object element : elements) {
 			if (!(element instanceof AnsiElement) && element != null) {
@@ -133,6 +139,7 @@ public abstract class AnsiOutput {
 	}
 
 	private static boolean isEnabled() {
+		/*死枚举直接 == 判断  学到了*/
 		if (enabled == Enabled.DETECT) {
 			if (ansiCapable == null) {
 				ansiCapable = detectIfAnsiCapable();
@@ -144,6 +151,7 @@ public abstract class AnsiOutput {
 
 	private static boolean detectIfAnsiCapable() {
 		try {
+			/*多用 Boolean.   Collection. Arrays.*/
 			if (Boolean.FALSE.equals(consoleAvailable)) {
 				return false;
 			}
@@ -161,6 +169,7 @@ public abstract class AnsiOutput {
 	 * Possible values to pass to {@link AnsiOutput#setEnabled}. Determines when to output
 	 * ANSI escape sequences for coloring application output.
 	 */
+	/*第一次见到枚举这样的写法*/
 	public enum Enabled {
 
 		/**

@@ -34,8 +34,11 @@ import org.springframework.util.Assert;
  * @author Michael Simons
  * @since 1.4.0
  */
+
+/*注意final 类 */
 public final class AnsiColors {
 
+	/*final map */
 	private static final Map<AnsiColor, LabColor> ANSI_COLOR_MAP;
 
 	static {
@@ -66,6 +69,7 @@ public final class AnsiColors {
 		return getClosest(new LabColor(color));
 	}
 
+	/*获取最相似的值？*/
 	private static AnsiColor getClosest(LabColor color) {
 		AnsiColor result = null;
 		double resultDistance = Float.MAX_VALUE;
@@ -82,10 +86,13 @@ public final class AnsiColors {
 	/**
 	 * Represents a color stored in LAB form.
 	 */
+	/*私有内部类  我也会*/
 	private static final class LabColor {
 
+		/*jdk 中还有  颜色空间这种东西呢？*/
 		private static final ColorSpace XYZ_COLOR_SPACE = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
 
+		/*注意final*/
 		private final double l;
 
 		private final double a;
@@ -108,6 +115,7 @@ public final class AnsiColors {
 			return fromXyz(xyz[0], xyz[1], xyz[2]);
 		}
 
+		/*这在这算啥呢？*/
 		private float[] fromXyz(float x, float y, float z) {
 			double l = (f(y) - 16.0) * 116.0;
 			double a = (f(x) - f(y)) * 500.0;
@@ -120,6 +128,7 @@ public final class AnsiColors {
 		}
 
 		// See https://en.wikipedia.org/wiki/Color_difference#CIE94
+		/*感觉像是把rgb  换算成 cabh？*/
 		public double getDistance(LabColor other) {
 			double c1 = Math.sqrt(this.a * this.a + this.b * this.b);
 			double deltaC = c1 - Math.sqrt(other.a * other.a + other.b * other.b);

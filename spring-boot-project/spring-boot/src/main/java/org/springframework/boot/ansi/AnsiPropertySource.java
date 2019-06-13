@@ -16,11 +16,7 @@
 
 package org.springframework.boot.ansi;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySource;
@@ -36,10 +32,14 @@ import org.springframework.util.StringUtils;
  * @author Phillip Webb
  * @since 1.3.0
  */
+/*继承了spring框架  配置元 */
 public class AnsiPropertySource extends PropertySource<AnsiElement> {
 
+	/*  list  继承了  Iterable  这货可以开始 foreach 了 */
 	private static final Iterable<MappedEnum<?>> MAPPED_ENUMS;
 
+	/*static 我能理解  构造函数前 执行   下面这一大串  刷新了我的认知  跟本看不懂啊   */
+	//fixme  要学习的 这块写的 号高深
 	static {
 		List<MappedEnum<?>> enums = new ArrayList<>();
 		enums.add(new MappedEnum<>("AnsiStyle.", AnsiStyle.class));
@@ -64,12 +64,14 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 	}
 
 	@Override
+	/*能看懂一丢丢   把初始化的  那个enum  for循环  然后 严谨的校验了一下  再 根据是否需要编码 来去是否编码*/
 	public Object getProperty(String name) {
 		if (StringUtils.hasLength(name)) {
 			for (MappedEnum<?> mappedEnum : MAPPED_ENUMS) {
 				if (name.startsWith(mappedEnum.getPrefix())) {
 					String enumName = name.substring(mappedEnum.getPrefix().length());
 					for (Enum<?> ansiEnum : mappedEnum.getEnums()) {
+						/*这里是把里面的set 集合中的 和外面的prefix 的 做equals*/
 						if (ansiEnum.name().equals(enumName)) {
 							if (this.encode) {
 								return AnsiOutput.encode((AnsiElement) ansiEnum);
@@ -86,6 +88,8 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 	/**
 	 * Mapping between an enum and the pseudo property source.
 	 */
+	/*Enum  这货  、、、、   玄学 来了  enum
+	*   和  enumset .allof */
 	private static class MappedEnum<E extends Enum<E>> {
 
 		private final String prefix;

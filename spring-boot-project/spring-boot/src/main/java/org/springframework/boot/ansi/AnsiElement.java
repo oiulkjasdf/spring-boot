@@ -21,6 +21,7 @@ package org.springframework.boot.ansi;
  *
  * @author Phillip Webb
  */
+/*接口*/
 public interface AnsiElement {
 
 	/**
