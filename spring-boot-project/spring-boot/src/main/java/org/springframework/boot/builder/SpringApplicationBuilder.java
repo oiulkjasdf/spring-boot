@@ -66,6 +66,7 @@ import org.springframework.util.StringUtils;
  * @author Andy Wilkinson
  * @see SpringApplication
  */
+/*这是个重点   先学习  core  和  bean  和  context 吧  吃不透*/
 public class SpringApplicationBuilder {
 
 	private final SpringApplication application;

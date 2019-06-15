@@ -36,9 +36,11 @@ import org.springframework.util.ObjectUtils;
  * @author Dave Syer
  * @author Eric Bottard
  */
+/*父类 关闭app 监听器  实现了  监听器   */
 public class ParentContextCloserApplicationListener
 		implements ApplicationListener<ParentContextAvailableEvent>, ApplicationContextAware, Ordered {
 
+	/*为什么要减10呢*/
 	private int order = Ordered.LOWEST_PRECEDENCE - 10;
 
 	private ApplicationContext context;
@@ -59,8 +61,11 @@ public class ParentContextCloserApplicationListener
 	}
 
 	private void maybeInstallListenerInParent(ConfigurableApplicationContext child) {
+		/*比较 上下文 内存中的 地址  并  子类 属于  配置类上下文  类型*/
 		if (child == this.context && child.getParent() instanceof ConfigurableApplicationContext) {
+			/*取出父类*/
 			ConfigurableApplicationContext parent = (ConfigurableApplicationContext) child.getParent();
+			/*加一个监听器*/
 			parent.addApplicationListener(createContextCloserListener(child));
 		}
 	}
@@ -71,6 +76,7 @@ public class ParentContextCloserApplicationListener
 	 * @param child the child context
 	 * @return the {@link ContextCloserListener} to use
 	 */
+	/*关闭的 子类*/
 	protected ContextCloserListener createContextCloserListener(ConfigurableApplicationContext child) {
 		return new ContextCloserListener(child);
 	}
@@ -78,23 +84,30 @@ public class ParentContextCloserApplicationListener
 	/**
 	 * {@link ApplicationListener} to close the context.
 	 */
+	/*监听器*/
 	protected static class ContextCloserListener implements ApplicationListener<ContextClosedEvent> {
 
+		/**/
 		private WeakReference<ConfigurableApplicationContext> childContext;
 
+		/*构造*/
 		public ContextCloserListener(ConfigurableApplicationContext childContext) {
+			/* WeakReference  弱引用 对象  弱引用对象gc 后 对象为空  WeakReference 的实例 放入 ReferenceQueue 队列中*/
 			this.childContext = new WeakReference<>(childContext);
 		}
 
 		@Override
 		public void onApplicationEvent(ContextClosedEvent event) {
 			ConfigurableApplicationContext context = this.childContext.get();
+			/*有活动的 上下文 */
 			if ((context != null) && (event.getApplicationContext() == context.getParent()) && context.isActive()) {
+				/*关闭上下文*/
 				context.close();
 			}
 		}
 
 		@Override
+		/*重写 equals */
 		public boolean equals(Object obj) {
 			if (this == obj) {
 				return true;
@@ -110,6 +123,7 @@ public class ParentContextCloserApplicationListener
 		}
 
 		@Override
+		/*重写equals  一定要重写 hash */
 		public int hashCode() {
 			return ObjectUtils.nullSafeHashCode(this.childContext.get());
 		}
